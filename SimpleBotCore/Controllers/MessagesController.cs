@@ -2,6 +2,7 @@
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
+using SimpleBotCore.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,11 @@ namespace SimpleBotCore.Controllers
     [Route("api/[controller]")]
     public class MessagesController : ControllerBase
     {
-        private readonly ILogger<MessagesController> _logger;
+        private ISimpleBotUser _simpleBot;
 
-        public MessagesController(ILogger<MessagesController> logger)
+        public MessagesController(ISimpleBotUser simpleBot)
         {
-            _logger = logger;
+            _simpleBot = simpleBot;
         }
 
         [HttpGet]
@@ -46,7 +47,8 @@ namespace SimpleBotCore.Controllers
             string userFromId = activity.From.Id;
             string userFromName = activity.From.Name;
 
-            string response = text;
+            SimpleMessage message = new SimpleMessage(userFromId, userFromName, text);
+            string response = _simpleBot.CreateResponse(message);
 
             await ReplyUserAsync(activity, response);
         }
