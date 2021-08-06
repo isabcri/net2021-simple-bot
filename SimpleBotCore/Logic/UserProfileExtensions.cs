@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Bot.Connector;
+using Microsoft.Bot.Schema;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,9 +9,21 @@ namespace SimpleBotCore.Logic
 {
     public static class UserProfileExtensions
     {
-        public static Task SendAsync(this SimpleMessage message)
+        const string MESSAGE_ACTIVITY = "message";
+        readonly static ChannelAccount BotAccount = new ChannelAccount(id: "bot1", name: "Bot");
+
+        public static Task SendAsync(this UserProfile user, string text)
         {
-            return null;
+            var connector = new ConnectorClient(user.ServiceUrl);
+            var msg = new Activity(
+                type: MESSAGE_ACTIVITY,
+                text: text,
+                replyToId: "",
+                conversation: new ConversationAccount() { Id = user.LastConversation },
+                recipient: new ChannelAccount() { Role = "user", Id = user.UserId, Name = user.UserName },
+                from: BotAccount);
+
+            return connector.Conversations.ReplyToActivityAsync(msg);
         }
     }
 }

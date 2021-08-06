@@ -9,15 +9,18 @@ namespace SimpleBotCore.Logic
     {
         public string UserId { get; }
         public string UserName { get; }
+        public string LastConversation { get; }
+
         public Uri ServiceUrl { get; }
 
-        public UserProfile(string userId, string username, string serviceUrl)
+        public UserProfile(string userId, string username, string serviceUrl, string conversationId)
         {
             if (userId == null)
                 throw new ArgumentNullException(nameof(userId));
 
             this.UserId = userId;
             this.UserName = username;
+            this.LastConversation = conversationId;
             this.ServiceUrl = new Uri(serviceUrl);
         }
     }
