@@ -7,8 +7,8 @@ namespace SimpleBotCore.Logic
 {
     public class SimpleUser
     {
-        public string UserId { get; }
-        public string UserName { get; }
+        public string Id { get; }
+        public string Name { get; }
         public string LastConversation { get; }
 
         public Uri ServiceUrl { get; }
@@ -18,8 +18,8 @@ namespace SimpleBotCore.Logic
             if (userId == null)
                 throw new ArgumentNullException(nameof(userId));
 
-            this.UserId = userId;
-            this.UserName = username;
+            this.Id = userId;
+            this.Name = username;
             this.LastConversation = conversationId;
             this.ServiceUrl = new Uri(serviceUrl);
         }

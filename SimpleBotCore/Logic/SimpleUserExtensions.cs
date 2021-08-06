@@ -20,7 +20,7 @@ namespace SimpleBotCore.Logic
                 text: text,
                 replyToId: "",
                 conversation: new ConversationAccount() { Id = user.LastConversation },
-                recipient: new ChannelAccount() { Role = "user", Id = user.UserId, Name = user.UserName },
+                recipient: new ChannelAccount() { Role = "user", Id = user.Id, Name = user.Name },
                 from: BotAccount);
 
             return connector.Conversations.ReplyToActivityAsync(msg);

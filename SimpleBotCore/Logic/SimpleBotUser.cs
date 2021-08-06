@@ -14,7 +14,7 @@ namespace SimpleBotCore.Logic
         {
 
 
-            return $"{user.UserName} disse '{message.Text}'";
+            return $"{user.Name} disse '{message.Text}'";
         }
     }
 }

@@ -26,15 +26,15 @@ namespace SimpleBotCore.Repositories
 
         public void Create(SimpleUser user)
         {
-            if (_users.ContainsKey(user.UserId))
+            if (_users.ContainsKey(user.Id))
                 throw new InvalidOperationException("Usuario ja existente");
 
-            _users[user.UserId] = user;
+            _users[user.Id] = user;
         }
 
         public void Update(SimpleUser user)
         {
-            _users[user.UserId] = user;
+            _users[user.Id] = user;
         }
     }
 }
