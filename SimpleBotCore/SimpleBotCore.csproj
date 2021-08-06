@@ -8,8 +8,4 @@
     <PackageReference Include="Microsoft.Bot.Connector" Version="4.14.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>
