@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SimpleBotCore.Logic
 {
-    public class UserProfile
+    public class SimpleUser
     {
         public string UserId { get; }
         public string UserName { get; }
@@ -13,7 +13,7 @@ namespace SimpleBotCore.Logic
 
         public Uri ServiceUrl { get; }
 
-        public UserProfile(string userId, string username, string serviceUrl, string conversationId)
+        public SimpleUser(string userId, string username, string serviceUrl, string conversationId)
         {
             if (userId == null)
                 throw new ArgumentNullException(nameof(userId));

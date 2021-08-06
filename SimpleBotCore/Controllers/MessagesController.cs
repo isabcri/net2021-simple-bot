@@ -48,14 +48,13 @@ namespace SimpleBotCore.Controllers
             string conversationId = activity.Conversation.Id;
             string text = activity.Text;
 
-            var user = new UserProfile(userFromId, username: null, serviceUrl, conversationId);
+            var user = new SimpleUser(userFromId, username: null, serviceUrl, conversationId);
             var message = new SimpleMessage(userFromId, text);
 
             string response = _simpleBot.CreateResponse(user, message);
 
             if( response != null )
             {
-
                 await user.SendAsync(response);
             }
         }

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace SimpleBotCore.Logic
 {
-    public static class UserProfileExtensions
+    public static class SimpleUserExtensions
     {
         const string MESSAGE_ACTIVITY = "message";
         readonly static ChannelAccount BotAccount = new ChannelAccount(id: "bot1", name: "Bot");
 
-        public static Task SendAsync(this UserProfile user, string text)
+        public static Task SendAsync(this SimpleUser user, string text)
         {
             var connector = new ConnectorClient(user.ServiceUrl);
             var msg = new Activity(
