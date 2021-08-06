@@ -7,15 +7,17 @@ namespace SimpleBotCore.Logic
 {
     public class SimpleMessage
     {
-        public string Id { get; }
-        public string User { get; }
+        public string UserId { get; }
+        public string UserName { get; }
         public string Text { get; }
+        public Uri ServiceUrl { get; }
 
-        public SimpleMessage(string id, string username, string text)
+        public SimpleMessage(string id, string username, string text, string serviceUrl)
         {
-            this.Id = id;
-            this.User = username;
+            this.UserId = id;
+            this.UserName = username;
             this.Text = text;
+            this.ServiceUrl = new Uri(serviceUrl);
         }
     }
 }

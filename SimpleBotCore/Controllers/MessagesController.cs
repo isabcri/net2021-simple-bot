@@ -43,23 +43,33 @@ namespace SimpleBotCore.Controllers
         // Estabelece comunicacao entre o usuario e o SimpleBotUser
         async Task HandleActivityAsync(Activity activity)
         {
-            string text = activity.Text;
+            string serviceUrl = activity.ServiceUrl;
             string userFromId = activity.From.Id;
             string userFromName = activity.From.Name;
+            string conversationId = activity.Conversation.Id;
+            string text = activity.Text;
 
-            SimpleMessage message = new SimpleMessage(userFromId, userFromName, text);
+            SimpleMessage message = new SimpleMessage(userFromId, userFromName, text, serviceUrl);
             string response = _simpleBot.CreateResponse(message);
 
-            await ReplyUserAsync(activity, response);
+            if( response != null )
+            {
+                await ReplyUserAsync(activity, message, response);
+            }
         }
 
         // Responde mensagens usando o Bot Framework Connector
-        static async Task ReplyUserAsync(Activity message, string text)
+        static async Task ReplyUserAsync(Activity message, SimpleMessage input, string text)
         {
-            var connector = new ConnectorClient(new Uri(message.ServiceUrl));
+            var connector = new ConnectorClient(input.ServiceUrl);
             var reply = message.CreateReply(text);
+            var msg = new Activity(type: "message", text: text, 
+                replyToId: "1", 
+                conversation: new ConversationAccount() { Id = message.Conversation.Id },
+                recipient: message.From,
+                from: new ChannelAccount(id: "bot1", name: "Bot"));            
 
-            await connector.Conversations.ReplyToActivityAsync(reply);
+            await connector.Conversations.ReplyToActivityAsync(msg);            
         }
     }
 }

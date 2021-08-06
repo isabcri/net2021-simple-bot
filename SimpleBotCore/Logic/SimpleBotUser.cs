@@ -9,7 +9,7 @@ namespace SimpleBotCore.Logic
     {
         public string CreateResponse(SimpleMessage message)
         {
-            return $"{message.User} disse '{message.Text}'";
+            return $"{message.UserName} disse '{message.Text}'";
         }
     }
 }
