@@ -14,7 +14,9 @@ namespace SimpleBotCore.Controllers
     [Route("api/[controller]")]
     public class MessagesController : ControllerBase
     {
-        private ISimpleBotUser _simpleBot;
+        const string MESSAGE_ACTIVITY = "message";
+        readonly static ChannelAccount BotAccount = new ChannelAccount(id: "bot1", name: "Bot");
+        readonly private ISimpleBotUser _simpleBot;
 
         public MessagesController(ISimpleBotUser simpleBot)
         {
@@ -49,25 +51,28 @@ namespace SimpleBotCore.Controllers
             string conversationId = activity.Conversation.Id;
             string text = activity.Text;
 
-            SimpleMessage message = new SimpleMessage(userFromId, userFromName, text, serviceUrl);
-            string response = _simpleBot.CreateResponse(message);
+            var user = new UserProfile(userFromId, userFromName, serviceUrl);
+            var message = new SimpleMessage(userFromId, conversationId, text);
+
+            string response = _simpleBot.CreateResponse(user, message);
 
             if( response != null )
             {
-                await ReplyUserAsync(activity, message, response);
+                await ReplyUserAsync(user, message, response);
             }
         }
 
         // Responde mensagens usando o Bot Framework Connector
-        static async Task ReplyUserAsync(Activity message, SimpleMessage input, string text)
+        static async Task ReplyUserAsync(UserProfile user, SimpleMessage input, string text)
         {
-            var connector = new ConnectorClient(input.ServiceUrl);
-            var reply = message.CreateReply(text);
-            var msg = new Activity(type: "message", text: text, 
-                replyToId: "1", 
-                conversation: new ConversationAccount() { Id = message.Conversation.Id },
-                recipient: message.From,
-                from: new ChannelAccount(id: "bot1", name: "Bot"));            
+            var connector = new ConnectorClient(user.ServiceUrl);
+            var msg = new Activity(
+                type: MESSAGE_ACTIVITY, 
+                text: text, 
+                replyToId: "", 
+                conversation: new ConversationAccount() { Id = input.Conversation },
+                recipient: new ChannelAccount() { Role = "user", Id = user.UserId, Name = user.UserName },
+                from: BotAccount);            
 
             await connector.Conversations.ReplyToActivityAsync(msg);            
         }

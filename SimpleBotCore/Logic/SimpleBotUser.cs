@@ -7,9 +7,9 @@ namespace SimpleBotCore.Logic
 {
     public class SimpleBotUser : ISimpleBotUser
     {
-        public string CreateResponse(SimpleMessage message)
+        public string CreateResponse(UserProfile user, SimpleMessage message)
         {
-            return $"{message.UserName} disse '{message.Text}'";
+            return $"{user.UserName} disse '{message.Text}'";
         }
     }
 }
