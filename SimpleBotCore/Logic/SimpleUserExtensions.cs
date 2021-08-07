@@ -14,7 +14,7 @@ namespace SimpleBotCore.Logic
 
         public static Task SendAsync(this SimpleUser user, string text)
         {
-            var connector = new ConnectorClient(user.ServiceUrl);
+            var connector = new ConnectorClient(new Uri(user.ServiceUrl));
             var msg = new Activity(
                 type: MESSAGE_ACTIVITY,
                 text: text,

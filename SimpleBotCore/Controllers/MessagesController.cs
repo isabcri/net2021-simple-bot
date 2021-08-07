@@ -31,7 +31,7 @@ namespace SimpleBotCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Activity activity)
         {
-            if (activity != null && activity.Type == ActivityTypes.Message)
+            if (activity != null)
             {
                 await HandleActivityAsync(activity);
             }
@@ -48,12 +48,25 @@ namespace SimpleBotCore.Controllers
             string conversationId = activity.Conversation.Id;
             string text = activity.Text;
 
-            var user = new SimpleUser(userFromId, username: null, serviceUrl, conversationId);
+            var guest = new SimpleUser(userFromId, serviceUrl, conversationId);
             var message = new SimpleMessage(userFromId, text);
 
-            string response = _simpleBot.CreateResponse(user, message);
+            var user = _simpleBot.IdentifyUser(guest);
 
-            if( response != null )
+            string response = null;
+            
+            switch(activity.Type)
+            {
+                case ActivityTypes.ConversationUpdate:
+                    response = _simpleBot.CreateResponse(user, null);
+                    break;
+
+                case ActivityTypes.Message:
+                    response = _simpleBot.CreateResponse(user, message);
+                    break;
+            }
+
+            if (response != null)
             {
                 await user.SendAsync(response);
             }

@@ -7,6 +7,7 @@ namespace SimpleBotCore.Logic
 {
     public interface ISimpleBotUser
     {
+        SimpleUser IdentifyUser(SimpleUser guest);
         string CreateResponse(SimpleUser user, SimpleMessage message);
     }
 }
