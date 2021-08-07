@@ -25,6 +25,43 @@ namespace SimpleBotCore.Logic
             _messageHistory = messages;
         }
 
+        public async void Bot()
+        {
+            string nome = null;
+
+            await WriteAsync("Boa noite!");
+
+            await WriteAsync("Qual o seu nome?");
+            nome = await ReadAsync();
+
+            await WriteAsync("Bem vindo ao Oraculo, " + nome);
+            
+            // Digite a sua pergunta
+            while(true)
+            {
+                string texto = await ReadAsync();
+
+                if (texto.EndsWith("?"))
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+        }
+
+        public Task WriteAsync(string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> ReadAsync(string msg="")
+        {
+            throw new NotImplementedException();
+        }
+
         public string CreateResponse(SimpleUser user, SimpleMessage message)
         {
             int messageCount = _messageHistory.GetMessageCount(user.Id);

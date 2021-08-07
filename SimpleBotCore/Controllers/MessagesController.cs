@@ -2,6 +2,7 @@
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Logging;
+using SimpleBotCore.Bot;
 using SimpleBotCore.Logic;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace SimpleBotCore.Controllers
     [Route("api/[controller]")]
     public class MessagesController : ControllerBase
     {
+        static BotDialogHub _botHub = new BotDialogHub();
+
         readonly private ISimpleBotUser _simpleBot;
 
         public MessagesController(ISimpleBotUser simpleBot)
@@ -31,10 +34,7 @@ namespace SimpleBotCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Activity activity)
         {
-            if (activity != null)
-            {
-                await HandleActivityAsync(activity);
-            }
+            _botHub.Process(activity);
 
             // HTTP 202
             return Accepted();
