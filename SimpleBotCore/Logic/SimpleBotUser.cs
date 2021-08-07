@@ -8,27 +8,29 @@ namespace SimpleBotCore.Logic
 {
     public class SimpleBotUser : ISimpleBotUser
     {
-        IUserProfileRepository _userProfile;
+        const string MENSAGEM_BEMVINDO = "Ola User! Qual é o seu nome?";
 
-        public SimpleBotUser(IUserProfileRepository userProfile)
+        IUserProfileRepository _userProfile;
+        IMessageRepository _messageHistory;
+
+        public SimpleBotUser(IUserProfileRepository userProfile, IMessageRepository messages)
         {
             _userProfile = userProfile;
+            _messageHistory = messages;
         }
 
         public string CreateResponse(SimpleUser user, SimpleMessage message)
         {
-            _userProfile.IncrementMessageCount(user.Id);
+            int messageCount = _messageHistory.GetMessageCount(user.Id);
 
-            int messageCount = user.MessageCount;
+            _messageHistory.LogMessage(message);
 
-            // Primeira mensagem
-            if ( messageCount == 0 )
+            if(messageCount == 0 )
             {
-                return "Ola User! Qual é o seu nome?";
+                return MENSAGEM_BEMVINDO;
             }
 
-            // Segunda mensagem
-            if ( messageCount == 1 )
+            if(messageCount == 1)
             {
                 string name = message.Text;
 
