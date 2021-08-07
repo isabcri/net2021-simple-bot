@@ -11,7 +11,6 @@ namespace SimpleBotCore.Logic
         public string LastConversation { get; }
         public string ServiceUrl { get; }
         public string Name { get; set; }
-        public int MessageCount { get; set; }
 
         public SimpleUser(string userId, string serviceUrl, string conversationId)
         {
@@ -22,7 +21,6 @@ namespace SimpleBotCore.Logic
             this.LastConversation = conversationId;
             this.ServiceUrl = serviceUrl;
             this.Name = null;
-            this.MessageCount = 0;
         }
     }
 }

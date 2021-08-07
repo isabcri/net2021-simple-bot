@@ -13,6 +13,5 @@ namespace SimpleBotCore.Repositories
         void Create(SimpleUser user);
 
         void UpdateName(string userId, string name);
-        void IncrementMessageCount(string userId);
     }
 }

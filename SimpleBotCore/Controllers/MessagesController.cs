@@ -58,7 +58,7 @@ namespace SimpleBotCore.Controllers
             switch(activity.Type)
             {
                 case ActivityTypes.ConversationUpdate:
-                    response = _simpleBot.CreateResponse(user, null);
+                    response = _simpleBot.CreateResponse(user, FirstMessage(user));
                     break;
 
                 case ActivityTypes.Message:
@@ -70,6 +70,11 @@ namespace SimpleBotCore.Controllers
             {
                 await user.SendAsync(response);
             }
+        }
+
+        SimpleMessage FirstMessage(SimpleUser user)
+        {
+            return new SimpleMessage(user.Id, "<CONVERSATION STARTED>");
         }
     }
 }

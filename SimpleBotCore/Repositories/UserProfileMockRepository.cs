@@ -43,18 +43,6 @@ namespace SimpleBotCore.Repositories
             SaveUser(user);
         }
 
-        public void IncrementMessageCount(string userId)
-        {
-            if (!Exists(userId))
-                throw new InvalidOperationException("Usuário não existe");
-
-            var user = GetUser(userId);
-
-            user.MessageCount = user.MessageCount + 1;
-            
-            SaveUser(user);
-        }
-
         private bool Exists(string userId)
         {
             return _users.ContainsKey(userId);
@@ -74,7 +62,6 @@ namespace SimpleBotCore.Repositories
         {
             var newUser = new SimpleUser(user.Id, user.ServiceUrl, user.LastConversation);
             newUser.Name = user.Name;
-            newUser.MessageCount = user.MessageCount;
 
             return newUser;
         }

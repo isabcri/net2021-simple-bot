@@ -25,12 +25,12 @@ namespace SimpleBotCore.Logic
 
             _messageHistory.LogMessage(message);
 
-            if(messageCount == 0 )
+            if (messageCount == 0)
             {
                 return MENSAGEM_BEMVINDO;
             }
 
-            if(messageCount == 1)
+            if (messageCount == 1)
             {
                 string name = message.Text;
 
