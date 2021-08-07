@@ -62,11 +62,11 @@ namespace SimpleBotCore.Repositories
         }
         private SimpleUser GetUser(string userId)
         {
-            return _users[userId];
+            return _users[userId].Clone();
         }
         private void SaveUser(SimpleUser user)
         {
-            _users[user.Id] = user;
+            _users[user.Id] = user.Clone();
         }
     }
 }

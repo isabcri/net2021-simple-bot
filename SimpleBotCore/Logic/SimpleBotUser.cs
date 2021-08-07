@@ -12,27 +12,23 @@ namespace SimpleBotCore.Logic
 
         public SimpleUser IdentifyUser(SimpleUser guest)
         {
-            var user = _userProfile.LoadUser(guest.Id);
+            var registeredUser = _userProfile.LoadUser(guest.Id);
 
-            if (user == null)
-            {
-                user = guest;
-                _userProfile.Create(guest);
-            }
-
-            return user;
+            return registeredUser ?? CreateGuestUser(guest);
         }
 
         public string CreateResponse(SimpleUser user, SimpleMessage message)
         {
             _userProfile.IncrementMessageCount(user.Id);
 
-            if ( user.MessageCount == 1 || message == null )
+            // Primeira mensagem
+            if ( user.MessageCount == 0 || message == null )
             {
                 return "Ola User! Qual é o seu nome?";
             }
 
-            if ( user.MessageCount == 2 )
+            // Segunda mensagem
+            if ( user.MessageCount == 1 )
             {
                 string name = message.Text;
 
@@ -41,7 +37,15 @@ namespace SimpleBotCore.Logic
                 return $"Olá {name}!";
             }
 
+            // Próximas mensagens
             return $"{user.Name} disse '{message.Text}'";
         }
+
+        SimpleUser CreateGuestUser(SimpleUser guest)
+        {
+            _userProfile.Create(guest);
+            return guest;
+        }
+
     }
 }

@@ -29,6 +29,8 @@ namespace SimpleBotCore.Logic
         public SimpleUser Clone()
         {
             var user = new SimpleUser(this.Id, this.ServiceUrl, this.LastConversation);
+            user.Name = this.Name;
+            user.MessageCount = this.MessageCount;
 
             return user;
         }
