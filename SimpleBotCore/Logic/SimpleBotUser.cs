@@ -9,9 +9,15 @@ namespace SimpleBotCore.Logic
     public class SimpleBotUser : ISimpleBotUser
     {
         const string MENSAGEM_BEMVINDO = "Ola User! Qual é o seu nome?";
+        readonly string RANDOM_USERNAME = "Aluno" + (new Random()).Next(1000, 9999);
 
         IUserProfileRepository _userProfile;
         IMessageRepository _messageHistory;
+
+        public string UserName
+        {
+            get { return RANDOM_USERNAME; }
+        }
 
         public SimpleBotUser(IUserProfileRepository userProfile, IMessageRepository messages)
         {
@@ -24,6 +30,12 @@ namespace SimpleBotCore.Logic
             int messageCount = _messageHistory.GetMessageCount(user.Id);
 
             _messageHistory.LogMessage(message);
+
+            switch(messageCount)
+            {
+                case 0:
+                    break;
+            }
 
             if (messageCount == 0)
             {
