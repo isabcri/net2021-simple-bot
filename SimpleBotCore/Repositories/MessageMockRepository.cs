@@ -32,5 +32,15 @@ namespace SimpleBotCore.Repositories
 
             return _logs[userId].Count;
         }
+
+        public IEnumerable<string> GetMessageHistory(string userId)
+        {
+            if (!_logs.ContainsKey(userId))
+            {
+                return Array.Empty<string>();
+            }
+
+            return _logs[userId];
+        }
     }
 }

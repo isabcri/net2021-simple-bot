@@ -10,5 +10,6 @@ namespace SimpleBotCore.Repositories
     {
         void LogMessage(SimpleMessage message);
         int GetMessageCount(string userId);
+        IEnumerable<string> GetMessageHistory(string userId);
     }
 }
