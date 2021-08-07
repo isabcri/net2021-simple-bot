@@ -8,20 +8,27 @@ namespace SimpleBotCore.Logic
 {
     public class SimpleBotUser : ISimpleBotUser
     {
-        IUserProfileRepository _userProfile = new UserProfileMockRepository();
-        
+        IUserProfileRepository _userProfile;
+
+        public SimpleBotUser(IUserProfileRepository userProfile)
+        {
+            _userProfile = userProfile;
+        }
+
         public string CreateResponse(SimpleUser user, SimpleMessage message)
         {
             _userProfile.IncrementMessageCount(user.Id);
 
+            int messageCount = user.MessageCount;
+
             // Primeira mensagem
-            if ( user.MessageCount == 0 || message == null )
+            if ( messageCount == 0 )
             {
                 return "Ola User! Qual é o seu nome?";
             }
 
             // Segunda mensagem
-            if ( user.MessageCount == 1 )
+            if ( messageCount == 1 )
             {
                 string name = message.Text;
 
@@ -31,7 +38,7 @@ namespace SimpleBotCore.Logic
             }
 
             // Próximas mensagens
-            if (message.Text.EndsWith("?"))
+            if ( message.Text.EndsWith("?") )
             {
                 return $"{user.Name} PERGUNTOU '{message.Text}'";
             }
