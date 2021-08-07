@@ -9,14 +9,7 @@ namespace SimpleBotCore.Logic
     public class SimpleBotUser : ISimpleBotUser
     {
         IUserProfileRepository _userProfile = new UserProfileMockRepository();
-
-        public SimpleUser IdentifyUser(SimpleUser guest)
-        {
-            var registeredUser = _userProfile.LoadUser(guest.Id);
-
-            return registeredUser ?? CreateGuestUser(guest);
-        }
-
+        
         public string CreateResponse(SimpleUser user, SimpleMessage message)
         {
             _userProfile.IncrementMessageCount(user.Id);
@@ -38,7 +31,26 @@ namespace SimpleBotCore.Logic
             }
 
             // Próximas mensagens
-            return $"{user.Name} disse '{message.Text}'";
+            if (message.Text.EndsWith("?"))
+            {
+                return $"{user.Name} PERGUNTOU '{message.Text}'";
+            }
+            else
+            {
+                return $"{user.Name} disse '{message.Text}'";
+            }
+        }
+
+        public SimpleUser IdentifyUser(SimpleUser guest)
+        {
+            var registeredUser = _userProfile.LoadUser(guest.Id);
+
+            if (registeredUser == null)
+            {
+                registeredUser = CreateGuestUser(guest);
+            }
+
+            return registeredUser;
         }
 
         SimpleUser CreateGuestUser(SimpleUser guest)

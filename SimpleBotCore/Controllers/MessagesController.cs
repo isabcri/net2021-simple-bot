@@ -43,13 +43,13 @@ namespace SimpleBotCore.Controllers
         // Estabelece comunicacao entre o usuario e o SimpleBotUser
         async Task HandleActivityAsync(Activity activity)
         {
+            string userId = activity.From.Id;
             string serviceUrl = activity.ServiceUrl;
-            string userFromId = activity.From.Id;
             string conversationId = activity.Conversation.Id;
             string text = activity.Text;
 
-            var guest = new SimpleUser(userFromId, serviceUrl, conversationId);
-            var message = new SimpleMessage(userFromId, text);
+            var guest = new SimpleUser(userId, serviceUrl, conversationId);
+            var message = new SimpleMessage(userId, text);
 
             var user = _simpleBot.IdentifyUser(guest);
 

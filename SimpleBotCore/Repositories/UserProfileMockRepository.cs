@@ -10,10 +10,6 @@ namespace SimpleBotCore.Repositories
     {
         Dictionary<string, SimpleUser> _users = new Dictionary<string, SimpleUser>();
 
-        public UserProfileMockRepository()
-        {
-        }
-
         public SimpleUser LoadUser(string userId)
         {
             if( Exists(userId) )
@@ -62,11 +58,20 @@ namespace SimpleBotCore.Repositories
         }
         private SimpleUser GetUser(string userId)
         {
-            return _users[userId].Clone();
+            return Clone(_users[userId]);
         }
         private void SaveUser(SimpleUser user)
         {
-            _users[user.Id] = user.Clone();
+            _users[user.Id] = Clone(user);
+        }
+
+        public SimpleUser Clone(SimpleUser user)
+        {
+            var newUser = new SimpleUser(user.Id, user.ServiceUrl, user.LastConversation);
+            newUser.Name = user.Name;
+            newUser.MessageCount = user.MessageCount;
+
+            return newUser;
         }
     }
 }
