@@ -8,7 +8,7 @@ namespace SimpleBotCore.Repositories
 {
     interface IUserProfileRepository
     {
-        SimpleUser LoadUser(string userId);
+        SimpleUser TryLoadUser(string userId);
 
         void Create(SimpleUser user);
 

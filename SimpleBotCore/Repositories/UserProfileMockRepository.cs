@@ -10,7 +10,7 @@ namespace SimpleBotCore.Repositories
     {
         Dictionary<string, SimpleUser> _users = new Dictionary<string, SimpleUser>();
 
-        public SimpleUser LoadUser(string userId)
+        public SimpleUser TryLoadUser(string userId)
         {
             if( Exists(userId) )
             {
@@ -45,6 +45,9 @@ namespace SimpleBotCore.Repositories
 
         public void IncrementMessageCount(string userId)
         {
+            if (!Exists(userId))
+                throw new InvalidOperationException("Usuário não existe");
+
             var user = GetUser(userId);
 
             user.MessageCount = user.MessageCount + 1;
@@ -56,10 +59,12 @@ namespace SimpleBotCore.Repositories
         {
             return _users.ContainsKey(userId);
         }
+
         private SimpleUser GetUser(string userId)
         {
             return Clone(_users[userId]);
         }
+
         private void SaveUser(SimpleUser user)
         {
             _users[user.Id] = Clone(user);

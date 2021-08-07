@@ -43,7 +43,7 @@ namespace SimpleBotCore.Logic
 
         public SimpleUser IdentifyUser(SimpleUser guest)
         {
-            var registeredUser = _userProfile.LoadUser(guest.Id);
+            var registeredUser = _userProfile.TryLoadUser(guest.Id);
 
             if (registeredUser == null)
             {
