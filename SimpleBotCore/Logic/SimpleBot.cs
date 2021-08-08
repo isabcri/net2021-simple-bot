@@ -9,19 +9,63 @@ namespace SimpleBotCore.Logic
 {
     public class SimpleBot : BotDialog
     {
+        IUserProfileRepository _userProfile;
+
+        public SimpleBot(IUserProfileRepository userProfile)
+        {
+            _userProfile = userProfile;
+        }
+
         protected async override Task BotConversation()
         {
-            string nome;
+            SimpleUser user = _userProfile.TryLoadUser(UserId);
+
+            // Create a user if it is null
+            if (user == null)
+            {
+                user = _userProfile.Create(new SimpleUser(UserId));
+            }
 
             await WriteAsync("Boa noite!");
 
-            await WriteAsync("Qual o seu nome?");
+            if( user.Nome != null && user.Idade != 0 && user.Cor != null )
+            {
+                await WriteAsync(
+                    $"{user.Nome}, de {user.Idade} anos, " +
+                    $"vejo que cadastrou sua cor preferida como {user.Cor}");
+            }
 
-            nome = await ReadAsync();
 
-            await WriteAsync($"{nome}, bem vindo ao Oraculo. Faça sua pergunta");
+            if( user.Nome == null )
+            {
+                await WriteAsync("Qual o seu nome?");
 
-            while (true)
+                user.Nome = await ReadAsync();
+
+                _userProfile.AtualizaNome(UserId, user.Nome);
+            }
+
+            if (user.Idade == 0)
+            {
+                await WriteAsync("Qual a sua idade?");
+
+                user.Idade = Int32.Parse(await ReadAsync());
+
+                _userProfile.AtualizaIdade(UserId, user.Idade);
+            }
+
+            if (user.Cor == null)
+            {
+                await WriteAsync("Qual a sua cor preferida?");
+
+                user.Cor = await ReadAsync();
+
+                _userProfile.AtualizaCor(UserId, user.Cor);
+            }
+
+            await WriteAsync($"{user.Nome}, bem vindo ao Oraculo. Você tem direito a 3 perguntas");
+
+            for(int i=0; i<3; i++)
             {
                 string texto = await ReadAsync();
 

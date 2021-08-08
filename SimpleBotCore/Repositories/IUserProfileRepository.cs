@@ -10,8 +10,10 @@ namespace SimpleBotCore.Repositories
     {
         SimpleUser TryLoadUser(string userId);
 
-        void Create(SimpleUser user);
+        SimpleUser Create(SimpleUser user);
 
-        void UpdateName(string userId, string name);
+        void AtualizaNome(string userId, string name);
+        void AtualizaIdade(string userId, int idade);
+        void AtualizaCor(string userId, string name);
     }
 }
