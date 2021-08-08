@@ -17,6 +17,11 @@ namespace SimpleBotCore.Bot
         Uri _serviceUrl;
         BotDialogMessages _messages = new BotDialogMessages();
 
+        public string UserId 
+        {
+            get { return _userId; }
+        }
+
         public void Init(Activity activity)
         {
             _userId = activity.From.Id;

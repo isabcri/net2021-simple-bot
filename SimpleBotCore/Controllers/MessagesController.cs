@@ -15,11 +15,11 @@ namespace SimpleBotCore.Controllers
     [Route("api/[controller]")]
     public class MessagesController : ControllerBase
     {
-        static IBotDialogHub _botHub = new BotDialogHub<SimpleBot>();
+        static IBotDialogHub _botHub;
 
-        public MessagesController()
+        public MessagesController(IBotDialogHub botHub)
         {
-
+            _botHub = botHub;
         }
 
         [HttpGet]

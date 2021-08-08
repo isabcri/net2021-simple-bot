@@ -1,4 +1,6 @@
-﻿using Microsoft.Bot.Schema;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Bot.Schema;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +8,15 @@ using System.Threading.Tasks;
 
 namespace SimpleBotCore.Bot
 {
-    public class BotDialogHub<T> : IBotDialogHub
-        where T: BotDialog, new()
+    public class BotDialogHub : IBotDialogHub
     {
         Dictionary<string, BotDialog> _activeBots = new Dictionary<string, BotDialog>();
+        IServiceProvider _serviceProvider;
+
+        public BotDialogHub(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
 
         // Distribui as mensagens entre os bots
         public Task ProcessAsync(Activity activity)
@@ -37,7 +44,8 @@ namespace SimpleBotCore.Bot
 
         void CreateBotDialog(string userId, Activity activity)
         {
-            var newBot = new T();
+            var newBot = _serviceProvider.GetService<BotDialog>();
+
             newBot.Init(activity);
 
             _activeBots.Add(userId, newBot);
