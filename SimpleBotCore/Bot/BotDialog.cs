@@ -9,18 +9,20 @@ namespace SimpleBotCore.Bot
 {
     public abstract class BotDialog
     {
-        readonly static ChannelAccount BotAccount = new ChannelAccount(id: "bot01", name: "Bot");
+        readonly static ChannelAccount BotAccount = new ChannelAccount(id: "bot01", name: "Bot", role: RoleTypes.Bot);
 
-        BotDialogMessages _messages = new BotDialogMessages();
         string _userId;
-        string _conversationid;
+        ChannelAccount _userAccount;
+        ConversationAccount _conversationid;
         Uri _serviceUrl;
+        BotDialogMessages _messages = new BotDialogMessages();
 
         public void Init(Activity activity)
         {
             _userId = activity.From.Id;
-            _conversationid = activity.Conversation.Id;
+            _conversationid = new ConversationAccount() { Id = activity.Conversation.Id };
             _serviceUrl = new Uri(activity.ServiceUrl);
+            _userAccount = new ChannelAccount() { Role = RoleTypes.User, Id = _userId, Name = "User" };
 
             Task.Run(RunBotConversation);
         }
@@ -54,8 +56,8 @@ namespace SimpleBotCore.Bot
                 type: ActivityTypes.Message,
                 text: text,
                 replyToId: "",
-                conversation: new ConversationAccount() { Id = _conversationid },
-                recipient: new ChannelAccount() { Role = "user", Id = _userId, Name = "User" },
+                conversation: _conversationid,
+                recipient: _userAccount,
                 from: BotAccount);
             
             return connector.Conversations.ReplyToActivityAsync(msg);
