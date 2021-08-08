@@ -20,13 +20,15 @@ namespace SimpleBotCore.Bot
             {
                 CreateBotDialog(userId, activity);
             }
-
-            // Entrega a mensagem ao bot correspondente
-            var bot = _activeBots[userId];
-
-            if( activity.Type == ActivityTypes.Message )
+            else
             {
-                bot.Accept(activity);
+                // Entrega a mensagem ao bot correspondente
+                var bot = _activeBots[userId];
+
+                if (activity.Type == ActivityTypes.Message)
+                {
+                    bot.Accept(activity);
+                }
             }
         }
 
