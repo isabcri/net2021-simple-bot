@@ -7,24 +7,21 @@ using System.Threading.Tasks;
 
 namespace SimpleBotCore.Bot
 {
-    public class BotDialog
+    public abstract class BotDialog
     {
         readonly static ChannelAccount BotAccount = new ChannelAccount(id: "bot01", name: "Bot");
 
-        readonly BotDialogMessages _messages = new BotDialogMessages();
-        readonly string _userId;
-        readonly string _conversationid;
-        readonly Uri _serviceUrl;
+        BotDialogMessages _messages = new BotDialogMessages();
+        string _userId;
+        string _conversationid;
+        Uri _serviceUrl;
 
-        public BotDialog(Activity activity)
+        public void Init(Activity activity)
         {
             _userId = activity.From.Id;
             _conversationid = activity.Conversation.Id;
             _serviceUrl = new Uri(activity.ServiceUrl);
-        }
 
-        public void Init()
-        {
             Task.Run(RunBotConversation);
         }
 
@@ -48,25 +45,7 @@ namespace SimpleBotCore.Bot
             }
         }
 
-        protected virtual async Task BotConversation()
-        {
-            string nome = null;
-
-            await WriteAsync("Boa noite!");
-
-            await WriteAsync("Qual o seu nome?");
-
-            nome = await ReadAsync();
-
-            await WriteAsync("Bem vindo ao Oraculo, " + nome);
-
-            while(true)
-            {
-                string line = await ReadAsync();
-
-                await WriteAsync("Você disse: " + line);
-            }
-        }
+        protected abstract Task BotConversation();
 
         protected Task WriteAsync(string text)
         {

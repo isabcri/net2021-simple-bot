@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace SimpleBotCore.Bot
 {
-    public class BotDialogHub
+    public class BotDialogHub<T> : IBotDialogHub
+        where T: BotDialog, new()
     {
         Dictionary<string, BotDialog> _activeBots = new Dictionary<string, BotDialog>();
 
         // Distribui as mensagens entre os bots
-        public void Process(Activity activity)
+        public Task ProcessAsync(Activity activity)
         {
             string userId = activity.From.Id;
 
@@ -30,12 +31,14 @@ namespace SimpleBotCore.Bot
                     bot.Accept(activity);
                 }
             }
+
+            return Task.CompletedTask;
         }
 
         void CreateBotDialog(string userId, Activity activity)
         {
-            var newBot = new BotDialog(activity);
-            newBot.Init();
+            var newBot = new T();
+            newBot.Init(activity);
 
             _activeBots.Add(userId, newBot);
         }

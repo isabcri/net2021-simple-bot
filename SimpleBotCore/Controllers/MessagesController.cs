@@ -15,13 +15,11 @@ namespace SimpleBotCore.Controllers
     [Route("api/[controller]")]
     public class MessagesController : ControllerBase
     {
-        static BotDialogHub _botHub = new BotDialogHub();
+        static IBotDialogHub _botHub = new BotDialogHub<SimpleBot>();
 
-        readonly private ISimpleBotUser _simpleBot;
-
-        public MessagesController(ISimpleBotUser simpleBot)
+        public MessagesController()
         {
-            _simpleBot = simpleBot;
+
         }
 
         [HttpGet]
@@ -34,47 +32,10 @@ namespace SimpleBotCore.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Activity activity)
         {
-            _botHub.Process(activity);
+            await _botHub.ProcessAsync(activity);
 
             // HTTP 202
             return Accepted();
-        }
-
-        // Estabelece comunicacao entre o usuario e o SimpleBotUser
-        async Task HandleActivityAsync(Activity activity)
-        {
-            string userId = activity.From.Id;
-            string serviceUrl = activity.ServiceUrl;
-            string conversationId = activity.Conversation.Id;
-            string text = activity.Text;
-
-            var guest = new SimpleUser(userId, serviceUrl, conversationId);
-            var message = new SimpleMessage(userId, text);
-
-            var user = _simpleBot.IdentifyUser(guest);
-
-            string response = null;
-            
-            switch(activity.Type)
-            {
-                case ActivityTypes.ConversationUpdate:
-                    response = _simpleBot.CreateResponse(user, FirstMessage(user));
-                    break;
-
-                case ActivityTypes.Message:
-                    response = _simpleBot.CreateResponse(user, message);
-                    break;
-            }
-
-            if (response != null)
-            {
-                await user.SendAsync(response);
-            }
-        }
-
-        SimpleMessage FirstMessage(SimpleUser user)
-        {
-            return new SimpleMessage(user.Id, "<CONVERSATION STARTED>");
         }
     }
 }
