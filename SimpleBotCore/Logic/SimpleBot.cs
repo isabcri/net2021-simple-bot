@@ -73,6 +73,7 @@ namespace SimpleBotCore.Logic
                 {
                     await WriteAsync("Processando...");
 
+                    // FAZER: GRAVAR AS PERGUNTAS EM UM BANCO DE DADOS
                     await Task.Delay(5000);
 
                     await WriteAsync("Resposta não encontrada");
