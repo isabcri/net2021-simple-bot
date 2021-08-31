@@ -30,8 +30,6 @@ namespace SimpleBotCore
             services.AddSingleton<IUserProfileRepository>(new UserProfileMockRepository());
             services.AddSingleton<IBotDialogHub, BotDialogHub>();
             services.AddSingleton<BotDialog, SimpleBot>();
-
-
             services.AddControllers();
         }
 
