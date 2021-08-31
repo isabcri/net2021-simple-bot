@@ -31,6 +31,7 @@ namespace SimpleBotCore
             services.AddSingleton<IBotDialogHub, BotDialogHub>();
             services.AddSingleton<BotDialog, SimpleBot>();
 
+
             services.AddControllers();
         }
 
