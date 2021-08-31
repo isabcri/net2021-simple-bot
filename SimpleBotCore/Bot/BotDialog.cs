@@ -21,7 +21,6 @@ namespace SimpleBotCore.Bot
         {
             get { return _userId; }
         }
-
         public void Init(Activity activity)
         {
             _userId = activity.From.Id;

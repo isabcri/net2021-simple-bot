@@ -17,20 +17,16 @@ namespace SimpleBotCore.Bot
         {
             _serviceProvider = serviceProvider;
         }
-
-        // Distribui as mensagens entre os bots
         public Task ProcessAsync(Activity activity)
         {
             string userId = activity.From.Id;
 
-            // Inicia um bot para novos usuarios
             if(!_activeBots.ContainsKey(userId))
             {
                 CreateBotDialog(userId, activity);
             }
             else
-            {
-                // Entrega a mensagem ao bot correspondente
+            {            
                 var bot = _activeBots[userId];
 
                 if (activity.Type == ActivityTypes.Message)

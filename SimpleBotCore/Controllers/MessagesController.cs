@@ -27,14 +27,11 @@ namespace SimpleBotCore.Controllers
         {
             return "Simple Bot está online";
         }
-
-        // POST api/messages
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Activity activity)
         {
             await _botHub.ProcessAsync(activity);
 
-            // HTTP 202
             return Accepted();
         }
     }

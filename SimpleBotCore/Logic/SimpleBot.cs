@@ -20,7 +20,6 @@ namespace SimpleBotCore.Logic
         {
             SimpleUser user = _userProfile.TryLoadUser(UserId);
 
-            // Create a user if it is null
             if (user == null)
             {
                 user = _userProfile.Create(new SimpleUser(UserId));
@@ -34,7 +33,6 @@ namespace SimpleBotCore.Logic
                     $"{user.Nome}, de {user.Idade} anos, " +
                     $"vejo que cadastrou sua cor preferida como {user.Cor}");
             }
-
 
             if( user.Nome == null )
             {
@@ -59,7 +57,6 @@ namespace SimpleBotCore.Logic
                 await WriteAsync("Qual a sua cor preferida?");
 
                 user.Cor = await ReadAsync();
-
                 _userProfile.AtualizaCor(UserId, user.Cor);
             }
 
@@ -72,8 +69,6 @@ namespace SimpleBotCore.Logic
                 if( texto.EndsWith("?") )
                 {
                     await WriteAsync("Processando...");
-
-                    // FAZER: GRAVAR AS PERGUNTAS EM UM BANCO DE DADOS
                     await Task.Delay(5000);
 
                     await WriteAsync("Resposta não encontrada");
