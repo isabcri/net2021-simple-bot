@@ -1,11 +1,10 @@
-﻿using Microsoft.Bot.Schema;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Microsoft.Bot.Schema;
 
 namespace SimpleBotCore.Bot
 {
     public interface IBotDialogHub
     {
-        Task ProcessAsync(Activity activity);
-        Task ProcessAsync(System.Diagnostics.Activity activity);       
+        Task ProcessAsync(Activity activity);     
     }
 }

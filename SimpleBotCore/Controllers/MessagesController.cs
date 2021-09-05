@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Bot.Schema;
 using SimpleBotCore.Bot;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace SimpleBotCore.Controllers

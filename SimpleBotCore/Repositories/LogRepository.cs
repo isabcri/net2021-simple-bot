@@ -4,35 +4,32 @@ namespace SimpleBotCore.Repositories
 {
     public class LogRepository : ILogRepository
     {
-        string _connectionString;
+        SqlConnection _connection;
 
-        public LogRepository(string connectionString)
+        public LogRepository()
         {
-            _connectionString = connectionString;
+            this._connection = new SqlConnection("Server=sqlServer:5050;Database=myDataBase;User Id=myUsername;");
         }
 
         public int TotalRegistros()
         {
-            using(var connection = new SqlConnection(_connectionString))
+            using (_connection)
             {
-                SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM tbLog", connection);
+                SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM tbLog", _connection);
 
                 int total = (int)command.ExecuteScalar();
-                
+                _connection.Dispose();
+
                 return total;
             }
         }
 
         public void CriarLog(string texto)
         {
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            using (_connection)
             {
-                connection.Open();
-
                 SqlCommand sql = new SqlCommand("INSERT tbLog VALUES (@texto)");
                 sql.Parameters.AddWithValue("@texto", texto);
-
-                sql.Connection = connection;
 
                 sql.ExecuteScalar();
             }

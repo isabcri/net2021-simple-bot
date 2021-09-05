@@ -21,12 +21,12 @@ namespace SimpleBotCore.Bot
         {
             string userId = activity.From.Id;
 
-            if(!_activeBots.ContainsKey(userId))
+            if (!_activeBots.ContainsKey(userId))
             {
                 CreateBotDialog(userId, activity);
             }
             else
-            {            
+            {
                 var bot = _activeBots[userId];
 
                 if (activity.Type == ActivityTypes.Message)
@@ -37,12 +37,6 @@ namespace SimpleBotCore.Bot
 
             return Task.CompletedTask;
         }
-
-        public Task ProcessAsync(System.Diagnostics.Activity activity)
-        {
-            throw new NotImplementedException();
-        }
-
         void CreateBotDialog(string userId, Activity activity)
         {
             var newBot = _serviceProvider.GetService<BotDialog>();
