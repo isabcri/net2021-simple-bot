@@ -38,6 +38,11 @@ namespace SimpleBotCore.Bot
             return Task.CompletedTask;
         }
 
+        public Task ProcessAsync(System.Diagnostics.Activity activity)
+        {
+            throw new NotImplementedException();
+        }
+
         void CreateBotDialog(string userId, Activity activity)
         {
             var newBot = _serviceProvider.GetService<BotDialog>();
